@@ -39,6 +39,7 @@ public class JdbcConfig {
         }
 
         HikariConfig config = new HikariConfig();
+        config.setDriverClassName("org.postgresql.Driver");  // must be explicit when bypassing Spring Boot auto-config
         config.setJdbcUrl(url);
         if (username != null && !username.isEmpty()) config.setUsername(username);
         if (password != null && !password.isEmpty()) config.setPassword(password);
