@@ -1,0 +1,28 @@
+services:
+  # ---------------------------------------------------------------------------
+  # Web Service (Spring Boot via Docker)
+  # ---------------------------------------------------------------------------
+  - type: web
+    name: wallet-service
+    runtime: docker
+    plan: free
+    dockerfilePath: ./Dockerfile
+    envVars:
+      - key: SPRING_DATASOURCE_URL
+        sync: false          # Set manually in Render dashboard (see README)
+      - key: SPRING_DATASOURCE_USERNAME
+        sync: false
+      - key: SPRING_DATASOURCE_PASSWORD
+        sync: false
+      - key: SERVER_PORT
+        value: 8080
+
+databases:
+  # ---------------------------------------------------------------------------
+  # PostgreSQL 16 (Render managed)
+  # Free tier: available for 90 days
+  # ---------------------------------------------------------------------------
+  - name: wallet-db
+    databaseName: wallet_db
+    user: wallet
+    plan: free
