@@ -2,6 +2,40 @@
 
 **Live API**: https://internal-wallet-service-ibeu.onrender.com
 
+## Try it Now
+
+```bash
+BASE=https://internal-wallet-service-ibeu.onrender.com
+
+# 1. Health check
+curl $BASE/health
+
+# 2. Alice's current balance (account 3, Gold Coins = asset_type 1)
+curl "$BASE/api/v1/accounts/3/balance?asset_type_id=1"
+
+# 3. Top up Alice with 100 Gold Coins  (change the key on retry to get a fresh transaction)
+curl -X POST $BASE/api/v1/transactions/topup \
+  -H "Content-Type: application/json" \
+  -H "Idempotency-Key: topup-alice-001" \
+  -d '{"account_id":3,"asset_type_id":1,"amount":100,"description":"Top up via Stripe"}'
+
+# 4. Alice spends 50 Gold Coins
+curl -X POST $BASE/api/v1/transactions/spend \
+  -H "Content-Type: application/json" \
+  -H "Idempotency-Key: spend-alice-001" \
+  -d '{"account_id":3,"asset_type_id":1,"amount":50,"description":"Purchase: Avatar Bundle"}'
+
+# 5. Retry spend with same key — returns idempotent:true, no double-debit
+curl -X POST $BASE/api/v1/transactions/spend \
+  -H "Content-Type: application/json" \
+  -H "Idempotency-Key: spend-alice-001" \
+  -d '{"account_id":3,"asset_type_id":1,"amount":50,"description":"Purchase: Avatar Bundle"}'
+```
+
+> **Note**: Render's free tier spins down after inactivity — the first request may take ~30 s to cold-start.
+
+---
+
 A high-performance, double-entry ledger wallet service built for high-traffic gaming and loyalty platforms. Tracks virtual currency credits (Gold Coins, Diamonds, Loyalty Points) with full auditability, ACID guarantees, and concurrency safety.
 
 ## Tech Stack
