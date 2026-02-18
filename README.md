@@ -1,5 +1,7 @@
 # Internal Wallet Service
 
+**Live API**: https://internal-wallet-service-ibeu.onrender.com
+
 A high-performance, double-entry ledger wallet service built for high-traffic gaming and loyalty platforms. Tracks virtual currency credits (Gold Coins, Diamonds, Loyalty Points) with full auditability, ACID guarantees, and concurrency safety.
 
 ## Tech Stack
