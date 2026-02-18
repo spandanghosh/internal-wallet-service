@@ -349,6 +349,19 @@ Clients provide a unique `Idempotency-Key` header (a UUID). The service:
 
 Concurrent duplicate requests: PostgreSQL serializes conflicting `INSERT ON CONFLICT` for the same key. Exactly one request will get `rows = 1`; all others get `rows = 0` and return the cached result. No double-processing is possible.
 
+### Amount Encoding
+
+All `amount` values in API requests and ledger responses are **integer counts of the smallest indivisible unit** of the asset — analogous to satoshis for Bitcoin or cents for USD.
+
+The `decimals` field on an `asset_type` is **display metadata**: a client UI should show `amount / 10^decimals` as the human-readable value.
+
+| `decimals` | Raw `amount` | Displayed as |
+|-----------|-------------|-------------|
+| 0 | 500 | 500 |
+| 2 | 1500 | 15.00 |
+
+All asset types seeded in this deployment use `decimals = 0`, so raw amounts equal displayed values and no conversion is required.
+
 ---
 
 ## Environment Variables

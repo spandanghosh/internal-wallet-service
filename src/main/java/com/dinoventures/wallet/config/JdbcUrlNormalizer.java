@@ -34,7 +34,14 @@ public class JdbcUrlNormalizer implements EnvironmentPostProcessor {
     @Override
     public void postProcessEnvironment(ConfigurableEnvironment environment,
                                        SpringApplication application) {
-        String url = environment.getProperty(PROPERTY);
+        String url;
+        try {
+            url = environment.getProperty(PROPERTY);
+        } catch (IllegalArgumentException e) {
+            // Placeholder could not be resolved (e.g. SPRING_DATASOURCE_URL not set
+            // in a test environment). Nothing to normalize — bail out silently.
+            return;
+        }
         if (url == null) return;
 
         // 1. Add jdbc: prefix if absent (Render provides "postgresql://..." format)
