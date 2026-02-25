@@ -335,7 +335,7 @@ Response `422 Unprocessable Entity` (insufficient funds):
 Every financial movement creates **two ledger entries that sum to zero**:
 
 ```mermaid
-flowchart LR
+flowchart TD
     subgraph topup["TOP-UP / BONUS"]
         direction LR
         T["Treasury"] -->|"− N"| U1["User Wallet +N"]
@@ -345,6 +345,11 @@ flowchart LR
         direction LR
         U2["User Wallet −N"] -->|"+ N"| R["Revenue"]
     end
+
+    INV["∑ all ledger entries = 0<br/>(money is never created or destroyed)"]
+
+    topup --> INV
+    spend --> INV
 ```
 
 | Flow | Debit | Credit |
